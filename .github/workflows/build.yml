@@ -1,0 +1,42 @@
+name: Build Eureka Kernel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
+
+    - name: Set up Build Environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential bc bison flex libssl-dev libncurses5-dev git zip unzip python3 crossbuild-essential-arm64
+
+    - name: Compile Kernel
+      run: |
+        export ARCH=arm64
+        export CROSS_COMPILE=aarch64-linux-gnu-
+        
+        if [ -f build.sh ]; then
+          chmod +x build.sh
+          ./build.sh
+        elif [ -f build ]; then
+          chmod +x build
+          ./build
+        else
+          make eureka_defconfig || make exynos7885-a20_defconfig || make defconfig
+          make -j$(nproc)
+        fi
+
+    - name: Upload Built Kernel
+      uses: actions/upload-artifact@v4
+      with:
+        name: Eureka-Kernel-A20
+        path: |
+          arch/arm64/boot/Image*
+          *.zip
+          out/*.zip
