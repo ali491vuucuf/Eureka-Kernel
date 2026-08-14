@@ -1161,7 +1161,8 @@ struct switch_lut spl_clk_aud_cpu_pclkdbg_blk_cmu_lut[] = {
 /* DVFS LUT */
 struct vclk_lut vdd_cpucl0_lut[] = {
 	{2192666, vdd_cpucl0_sod_lut_params},
-	{1698666, vdd_cpucl0_od_lut_params},
+	{ 1794000, vdd_cpucl0_od_lut_params },
+{1698666, vdd_cpucl0_od_lut_params},
 	{1300000, vdd_cpucl0_nm_lut_params},
 	{747500, vdd_cpucl0_ud_lut_params},
 	{476666, vdd_cpucl0_sud_lut_params},
